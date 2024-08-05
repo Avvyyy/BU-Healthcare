@@ -14,6 +14,7 @@
         name="email"
         id="email"
         placeholder="Email"
+				v-model="email"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -21,6 +22,7 @@
         name="password"
         id="password"
         placeholder="Password"
+				v-model="password"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
 			<div class="callToAction flex mt-3 items-end justify-between">
@@ -56,3 +58,13 @@
     </div>
   </div>
 </template>
+
+
+<script setup>
+	import { ref } from 'vue';
+
+	//Form validation
+	const email = ref('');
+	const password = ref('');
+	
+</script>

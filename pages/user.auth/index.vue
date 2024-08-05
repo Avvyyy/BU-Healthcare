@@ -23,6 +23,7 @@
         name="fullName"
         id="fullName"
         placeholder="Full Name"
+				v-model="fullName"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -30,6 +31,7 @@
         name="email"
         id="email"
         placeholder="Email"
+				v-model="email"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -40,6 +42,7 @@
         maxlength="11"
         id="phoneNumber"
         placeholder="Mobile Number"
+				v-model="phoneNumber"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -47,6 +50,7 @@
         name="password"
         id="password"
         placeholder="Password"
+				v-model="password"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -54,6 +58,7 @@
         name="confirmPassword"
         id="confirmPassword"
         placeholder="Confirm Password"
+				v-model="confirmPassword"
         class="bg-inherit border-b-2 border-b-white outline-none placeholder:text-white text-white"
       />
       <input
@@ -64,3 +69,15 @@
     </form>
   </div>
 </template>
+
+<script setup>
+	import { ref } from 'vue';
+
+	//Form validation
+	const fullName = ref('');
+	const email = ref('');
+	const phoneNumber = ref('');
+	const password = ref('');
+	const confirmPassword = ref('');
+
+</script>
