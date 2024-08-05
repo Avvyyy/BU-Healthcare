@@ -1,7 +1,7 @@
 <template>
-	<div>
-		<nav-bar />
+	<div class="h-screen w-screen">
+		<nav-bar class="bg-brand-blue"/>
 		<slot></slot>
-		<foo-ter />
+		<!-- <foo-ter/> -->
 	</div>
 </template>

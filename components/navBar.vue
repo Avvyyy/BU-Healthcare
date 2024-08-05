@@ -25,11 +25,7 @@ const isOpen = ref(false);
             class="py-5 px-3 text-white hover:text-gray-300"
             >Report Emergency</nuxt-link
           >
-          <nuxt-link
-            to="/about"
-            class="py-2 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
-            >About Us</nuxt-link
-          >
+          <customButton link="/about-us" linkContent="About Us"/>
         </div>
         <!-- mobile button goes here -->
         <div class="md:hidden flex items-center">
@@ -53,13 +49,11 @@ const isOpen = ref(false);
       </div>
     </div>
     <!-- mobile menu -->
-    <div class="md:hidden" :class="isOpen ? 'flex flex-col' : 'hidden'">
-      <nuxt-link to="#" class="py-3 px-3text-white hover:text-gray-300"
+    <div class="md:hidden flex flex-col p-2" :class="isOpen ? 'flex flex-col' : 'hidden'">
+      <nuxt-link to="report-emergency" class="py-3 px-3 text-white hover:text-gray-300"
         >Report Emergency</nuxt-link
       >
-			<nuxt-link to="#" class="py-3 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
-        >Get Started</nuxt-link
-      >
+		  <customButton link="about-us" linkContent="About Us" class="ml-2"/>
     </div>
   </nav>
 </template>
