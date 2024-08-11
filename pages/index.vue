@@ -5,7 +5,7 @@
       <h1 class="font-bold text-3xl">BU-Healthcare - Leveraging technology for proactivity in healthcare</h1>
 			<h3 class="font-semibold">Your journey to rapid emergency response starts here , with us</h3>
 			<div class="hero-menu-buttons flex md:flex-row flex-col items-center gap-7">
-				<custom-button link="user.auth/" linkContent="Get Started" />
+				<custom-button link="./user.auth/" linkContent="Get Started" />
         <custom-button link="report-emergency" linkContent="Report Emergency" />
 			</div>
     </main>
