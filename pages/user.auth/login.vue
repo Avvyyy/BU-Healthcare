@@ -74,6 +74,7 @@
   </div>
 </template>
 
+
 <script setup>
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -133,63 +134,6 @@ const submitForm = () => {
         } else {
           console.error("No such user found!");
         }
-      })
-      .catch((error) => {
-        console.error("Login failed", error.code, error.message);
-        // Handle login errors
-      });
-  } else {
-    console.log("Validation failed");
-  }
-};
-</script>
-
-import { reactive } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useUserStore } from '@/stores/userStore';
-//I will use these imports to get the user data from firestore
-import { useDocument } from "vuefire";
-import { getFirestore, collection, doc } from 'firebase/firestore';
-
-
-// Form Validation
-const formValidationState = reactive({
-  email$: "",
-  password: "",
-});
-
-const rules = {
-  email$: { required, email },
-  password: { required },
-};
-
-const v$ = useVuelidate(rules, formValidationState);
-
-const submitForm = () => {
-  v$.value.$touch(); // Mark all fields as touched to trigger validation
-      const db = getFirestore();
-
-  if (!v$.value.$invalid) {
-    const auth = getAuth();
-    signInWithEmailAndPassword(
-      auth,
-      formValidationState.email$,
-      formValidationState.password
-    )
-      .then(() => {
-        const user = useDocument(doc(collection(db, 'users'), email$)); //Get the user data from firestore and set it as the user
-
-        // Set the user in the store
-        const userStore = useUserStore();
-        userStore.setUser(user);
-        console.log(user);
-
-        // Redirect to the user dashboard
-        // if(user){
-        //   navigateTo('../user/');
-        // }
       })
       .catch((error) => {
         console.error("Login failed", error.code, error.message);
