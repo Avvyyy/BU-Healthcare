@@ -6,11 +6,16 @@
     <div
       class="formDetails w-full h-full flex flex-col gap-3 md:gap-10 justify-center items-center"
     >
-      <h1 class="font-bold text-lg md:text-2xl text-blue-600">Get Started With BU-Healthcare</h1>
+      <h1 class="font-bold text-lg md:text-2xl text-blue-600">
+        Get Started With BU-Healthcare
+      </h1>
 
       <div class="callToAction flex gap-3">
         <h5>Have an account already?</h5>
-        <nuxt-link to="./login" class="text-blue-600 font-semibold hover:text-blue-400 underline">
+        <nuxt-link
+          to="./login"
+          class="text-blue-600 font-semibold hover:text-blue-400 underline"
+        >
           Login
         </nuxt-link>
       </div>
@@ -95,17 +100,26 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import { useVuelidate } from '@vuelidate/core';
-import { required, email, minLength, maxLength, sameAs } from '@vuelidate/validators';
+import { reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  sameAs,
+} from "@vuelidate/validators";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore"; //Creating a new user in the database
+import { useUserStore } from '@/stores/userStore';
 
 // Form validation state
 const signUpFormValidationState = reactive({
-  fullName: '',
-  email$: '',
-  phoneNumber: '',
-  password: '',
-  confirmPassword: '',
+  fullName: "",
+  email$: "",
+  phoneNumber: "",
+  password: "",
+  confirmPassword: "",
 });
 
 // Validation rules
@@ -114,19 +128,51 @@ const rules = {
   email$: { required, email },
   phoneNumber: { required, minLength: minLength(11), maxLength: maxLength(11) },
   password: { required },
-  confirmPassword: { required, sameAsPassword: sameAs(computed(() => signUpFormValidationState.password)) },
+  confirmPassword: {
+    required,
+    sameAsPassword: sameAs(computed(() => signUpFormValidationState.password)),
+  },
 };
 
 const v$ = useVuelidate(rules, signUpFormValidationState);
 
 const submitForm = () => {
   v$.value.$touch(); // Mark all fields as touched to trigger validation
-
   if (!v$.value.$invalid) {
-    // Perform the signup logic here
-    alert('SignUp successful!');
-  } else {
-    console.log('Validation failed.');
+    const auth = getAuth();
+    const db = getFirestore();
+
+    createUserWithEmailAndPassword(
+      auth,
+      signUpFormValidationState.email$,
+      signUpFormValidationState.password
+    )
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        user.displayName = signUpFormValidationState.fullName;
+        user.phoneNumber = signUpFormValidationState.phoneNumber;
+        console.log("SignUp successful", user);
+
+        // Add user data to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          fullName: signUpFormValidationState.fullName,
+          phoneNumber: signUpFormValidationState.phoneNumber,
+          email: signUpFormValidationState.email$,
+        });
+
+        // Set the user in the store
+        const userStore = useUserStore();
+        userStore.setUser(user);
+
+        // Redirect the user to the homepage
+        if (user) {
+          navigateTo("../user/");
+        }
+      })
+      .catch((error) => {
+        console.log("SignUp Failed", error.code, error.message);
+        // Handle errors
+      });
   }
 };
 </script>

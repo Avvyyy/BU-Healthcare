@@ -2,16 +2,22 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-icon", "nuxt-vuefire"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-icon", "nuxt-vuefire", "@pinia/nuxt"],
+  ssr: true,
  vuefire: {
+  // ensures that the auth module is enabled
+  auth: {
+    enabled: true,
+    // sessionCookie: true,
+  },
   config: {
     // Config from firebase project settings
-    apiKey: "AIzaSyD3zbPsXZVFp63mmANX01VGWPGrDLdejrs",
-    authDomain: "bu-healthcare.firebaseapp.com",
-    projectId: "bu-healthcare",
-    storageBucket: "bu-healthcare.appspot.com",
-    messagingSenderId: "714665042795",
-    appId: "1:714665042795:web:00568c211687e0b8cee22e"
+    apiKey: process.env.apiKey,
+    authDomain: process.env.authDomain,
+    projectId:  process.env.projectId,
+    storageBucket: process.env.storageBucket,
+    messagingSenderId: process.env.messagingSenderId,
+    appId: process.env.appId
   }
  }
 })

@@ -1,7 +1,22 @@
 <script setup>
 import { ref } from "vue";
+import { signOut, getAuth } from 'firebase/auth';
 
 const isOpen = ref(false);
+
+const handleSignOut = () => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      console.log("User signed out");
+      navigateTo('../user.auth/login'); // Redirect to login page after logout
+    })
+    .catch((error) => {
+      console.error("Logout failed", error);
+    });
+};
+
+
 </script>
 <template>
   <nav class="shadow-md sticky top-0">
@@ -26,6 +41,7 @@ const isOpen = ref(false);
             >Report Emergency</nuxt-link
           >
           <customButton link="/about-us" linkContent="About Us"/>
+          <button @click="handleSignOut">Logout</button>
         </div>
         <!-- mobile button goes here -->
         <div class="md:hidden flex items-center">
@@ -54,6 +70,7 @@ const isOpen = ref(false);
         >Report Emergency</nuxt-link
       >
 		  <customButton link="about-us" linkContent="About Us" class="ml-2"/>
+
     </div>
   </nav>
 </template>
